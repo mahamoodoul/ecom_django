@@ -148,4 +148,4 @@ STATICFILES_DIR = [STATIC_DIR,]
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-# LOGIN_URL = '/account/login/'
+LOGIN_URL = '/account/login/'
