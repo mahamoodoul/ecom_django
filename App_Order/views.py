@@ -141,22 +141,22 @@ def decrease_cart(request, pk):
         return redirect("App_Shop:home")
 
 
-@login_required
-
-def coupon_apply(request):
-    if (request.method == "POST"):
-        coupon = request.POST.get('coupon')
-        coupon_percentage = Voucher.objects.get(voucher_name= coupon)
-        print(coupon_percentage.discount)
-        if coupon_percentage:
-            carts = Cart.objects.filter(user=request.user, purchased=False)
-            orders = Order.objects.filter(user=request.user, ordered=False)
-            if carts.exists() and orders.exists():
-                total_ammount = orders[0].get_totals
-                discount = coupon_percentage.discount
-                total_discount = (total_ammount* discount)/100
-                final_ammount = total_ammount - total_discount
-                return render(request, 'App_Order/cart.html', context={'carts':carts, 'order':order, 'final_ammount':final_ammount })
-            else:
-                messages.warning(request, "You don't have any item in your cart!")
-                return redirect("App_Shop:home")
+# @login_required
+#
+# def coupon_apply(request):
+#     if (request.method == "POST"):
+#         coupon = request.POST.get('coupon')
+#         coupon_percentage = Voucher.objects.get(voucher_name= coupon)
+#         print(coupon_percentage.discount)
+#         if coupon_percentage:
+#             carts = Cart.objects.filter(user=request.user, purchased=False)
+#             orders = Order.objects.filter(user=request.user, ordered=False)
+#             if carts.exists() and orders.exists():
+#                 total_ammount = orders[0].get_totals
+#                 discount = coupon_percentage.discount
+#                 total_discount = (total_ammount* discount)/100
+#                 final_ammount = total_ammount - total_discount
+#                 return render(request, 'App_Order/cart.html', context={'carts':carts, 'order':order, 'final_ammount':final_ammount })
+#             else:
+#                 messages.warning(request, "You don't have any item in your cart!")
+#                 return redirect("App_Shop:home")

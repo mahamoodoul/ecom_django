@@ -65,8 +65,11 @@ def payment(request):
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     order_items = order_qs[0].orderitems.all()
     order_items_count = order_qs[0].orderitems.count()
-    order_total = order_qs[0].get_totals()
-
+    if request.session['final_ammount']:
+        order_total = request.session['final_ammount']
+    else:
+        order_total = order_qs[0].get_totals()
+    
     mypayment.set_product_integration(total_amount=Decimal(order_total), currency='BDT', product_category='Mixed', product_name=order_items, num_of_item=order_items_count, shipping_method='Courier', product_profile='None')
 
 
