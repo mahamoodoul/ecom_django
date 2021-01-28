@@ -34,4 +34,10 @@ class Order(models.Model):
         total = 0
         for order_item in self.orderitems.all():
             total += float(order_item.get_total())
+
         return total
+
+
+class Voucher(models.Model):
+    voucher_name = models.CharField(max_length=264)
+    discount = models.FloatField()

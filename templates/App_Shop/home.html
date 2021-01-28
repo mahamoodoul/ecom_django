@@ -12,11 +12,13 @@
         </div>
         <figcaption class="info-wrap">
           <h6 class="title"><a href="{% url 'App_Shop:product_detail' pk=product.pk %}">{{product.name}}</a></h6>
+          <h5>{{product.category.title}}</h5>
           <div class="action-wrap">
             <div class="price-wrap h5">
               <span class="price-new">&#2547; {{product.price|floatformat:2}}</span>
               <span class="price-old"><strike>&#2547; {{product.old_price|floatformat:2}}</strike></span>
             </div>
+            <h5>Owned by: {{product.shop_info.vendor_name}}</h5>
           </div>
         </figcaption>
       </figure>

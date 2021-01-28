@@ -9,4 +9,6 @@ urlpatterns = [
     path('cart/', views.cart_view, name="cart"),
     path('increase/<pk>/', views.increase_cart, name="increase"),
     path('decrease/<pk>/', views.decrease_cart, name="decrease"),
+    path('coupon_apply', views.coupon_apply, name="coupon_apply"),
+
 ]

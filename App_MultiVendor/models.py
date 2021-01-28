@@ -17,6 +17,7 @@ class VendorProfile(models.Model):
     vendor_name = models.CharField(max_length=264)
     address = models.TextField(max_length=300)
     vendoruser = models.OneToOneField(User, on_delete=models.CASCADE,related_name='vendor_info')
+    is_vendor = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

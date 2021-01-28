@@ -35,7 +35,10 @@ def checkout(request):
     #print(order_qs)
     order_items = order_qs[0].orderitems.all()
     #print(order_items)
-    order_total = order_qs[0].get_totals()
+    if request.session['final_ammount']:
+        order_total = request.session['final_ammount']
+    else:
+        order_total = order_qs[0].get_totals()
     return render(request, 'App_Payment/checkout.html', context={"form":form, "order_items":order_items, "order_total":order_total, "saved_address":saved_address})
 
 

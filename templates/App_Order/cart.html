@@ -31,7 +31,12 @@
       <tr>
         <th scope="row"></th>
         <td colspan="2">Total</td>
-        <td align="right">&#2547; {{order.get_totals | floatformat:2 }}</td>
+        {% if request.session.final_ammount %}
+        <td align="right">&#2547; {{request.session.final_ammount| floatformat:2 }}</td>
+        <td class="price-old"><strike>&#2547; {{order.get_totals | floatformat:2 }}</strike></td>
+        {% else %}
+          <td align="right">&#2547; {{order.get_totals | floatformat:2 }}</td>
+        {% endif %}
         <td></td>
       </tr>
       <tr>
@@ -43,5 +48,12 @@
       </tr>
     </tbody>
   </table>
+  <div class="">
+      <form class="" method="POST">
+        <input class="form form-contro w-10" type="text" name="coupon" >
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning mr-4">Add Coupon</button>
+      </form>
+  </div>
 </div>
 {% endblock %}

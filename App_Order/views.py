@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 # Model
-from App_Order.models import Cart, Order
+from App_Order.models import Cart, Order, Voucher
 from App_Shop.models import Product
 # Messages
 from django.contrib import messages
@@ -48,6 +48,23 @@ def add_to_cart(request, pk):
 def cart_view(request):
     carts = Cart.objects.filter(user=request.user, purchased=False)
     orders = Order.objects.filter(user=request.user, ordered=False)
+    if (request.method == "POST"):
+        coupon = request.POST.get('coupon')
+        coupon_percentage = Voucher.objects.get(voucher_name= coupon)
+        print(coupon_percentage.discount)
+        if coupon_percentage:
+            if carts.exists() and orders.exists():
+                order = orders[0]
+                total_ammount = orders[0].get_totals()
+                print(f"total ammount: {total_ammount}")
+                discount = coupon_percentage.discount
+                total_discount = (total_ammount * discount) / 100
+                final_ammount = (total_ammount - total_discount)
+                request.session['final_ammount'] = final_ammount
+                return render(request, 'App_Order/cart.html', context={'carts':carts, 'order':order, 'final_ammount':final_ammount })
+            else:
+                messages.warning(request, "You don't have any item in your cart!")
+                return redirect("App_Shop:home")
     if carts.exists() and orders.exists():
         order = orders[0]
         return render(request, 'App_Order/cart.html', context={'carts':carts, 'order':order})
@@ -122,3 +139,24 @@ def decrease_cart(request, pk):
     else:
         messages.info(request, "You don't have an active order")
         return redirect("App_Shop:home")
+
+
+@login_required
+
+def coupon_apply(request):
+    if (request.method == "POST"):
+        coupon = request.POST.get('coupon')
+        coupon_percentage = Voucher.objects.get(voucher_name= coupon)
+        print(coupon_percentage.discount)
+        if coupon_percentage:
+            carts = Cart.objects.filter(user=request.user, purchased=False)
+            orders = Order.objects.filter(user=request.user, ordered=False)
+            if carts.exists() and orders.exists():
+                total_ammount = orders[0].get_totals
+                discount = coupon_percentage.discount
+                total_discount = (total_ammount* discount)/100
+                final_ammount = total_ammount - total_discount
+                return render(request, 'App_Order/cart.html', context={'carts':carts, 'order':order, 'final_ammount':final_ammount })
+            else:
+                messages.warning(request, "You don't have any item in your cart!")
+                return redirect("App_Shop:home")
